@@ -1,0 +1,9 @@
+.board 
+{
+    background-color: #338a54;
+    text-align: center;
+    width:100%;
+    margin: auto;
+    height:100%;
+    padding-top:100px;
+}

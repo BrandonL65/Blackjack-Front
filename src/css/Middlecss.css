@@ -1,0 +1,35 @@
+.middle 
+{
+    background-image: url("https://ii3.worldmarket.com/fcgi-bin/iipsrv.fcgi?FIF=/images/worldmarket/source/74812_XXX_v6.tif&wid=480&cvt=jpeg");
+    color: black;
+    font-size:16px;
+    padding:3px;
+    border: 2px dotted black;
+}
+.middle button 
+{
+    border-radius:50%;
+    margin:10px;
+    font-size:16px;
+    padding:11px;
+    color:white;
+    font-weight:700;
+}
+
+#new 
+{
+    background-color: black;
+}
+#hit
+{
+    background-color: green;
+}
+#stand 
+{
+    background-color: red;
+}
+
+button:hover 
+{
+    transform: scale(1.2);
+}
