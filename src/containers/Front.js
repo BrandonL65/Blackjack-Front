@@ -23,7 +23,8 @@ export default class Front extends React.Component
         gameOver: false,
         playerNumberOfAces: 0,
         dealerNumberOfAces: 0,
-        betAmount: 30
+        betAmount: 50,
+        doneDealing: false 
     }
     componentDidMount() 
     {
@@ -115,7 +116,8 @@ export default class Front extends React.Component
             winOrLose: "",
             gameOver: false,
             playerNumberOfAces: 0,
-            dealerNumberOfAces: 0
+            dealerNumberOfAces: 0,
+            doneDealing: false 
         }, () => {
             console.log(this.state)
             this.newDeck()                              //Draws 2 cards for player and 2 cards for dealer 
@@ -141,9 +143,11 @@ export default class Front extends React.Component
                     this.setState({                                                         
                         ...this.state,
                         playerTotal: 12,
-                        playerNumberOfAces: this.state.playerNumberOfAces + 1
+                        playerNumberOfAces: this.state.playerNumberOfAces + 1,
+                        doneDealing: true 
                     }, () => {
-                        this.delay(300);
+                        this.delay(300)
+                        .then(() => this.doneDealing());
                     })
                 }
                 else if (this.handleInitialPlayerAce() === 2)                         //Returns false if only 1 of the player's initial cards is an ace 
@@ -181,6 +185,12 @@ export default class Front extends React.Component
             })
         })
     }
+    handleDoneDealing = () => {
+        this.setState({
+            ...this.state,
+            doneDealing: true 
+        })
+    }
     handleInitialDealerAce = () => {
         if (this.state.dealerCards[0].value === "ACE" && tenValues.includes(this.state.dealerCards[1].value)) {                                      //if initial 2 cards are 21, dealer hits blackjack
             return 1;
@@ -202,6 +212,8 @@ export default class Front extends React.Component
     }
     drawOne = () =>                           //Draw only 1 card
     {
+        if (this.state.doneDealing === true)
+        {
             this.drawCard("p")                 //Player draws a card 
             .then(() => {
                 this.delay(300)
@@ -228,6 +240,8 @@ export default class Front extends React.Component
                 }
 
             })
+        }
+
 
     }
     handleAceValue = () => {                                                                    //Checks if last card drawn is an ace 
@@ -474,8 +488,7 @@ export default class Front extends React.Component
         return (
             <div className = "board">
                 <Player flip = {this.state.flip} src = {this.state.src} type = "dealer" cards = {this.state.dealerCards}/>
-                <h1>Welcome, {this.state.name}</h1>
-                <Middle displayDealerTotal = {this.state.displayDealerTotal} dealerTotal = {this.state.dealerTotal} playerTotal = {this.state.playerTotal} chips = {this.state.chips} winOrLose = {this.state.winOrLose} newGame = {this.newGame} drawOne = {this.drawOne} stand = {this.stand} flip = {this.handleFlip}/>
+                <Middle betAmount = {this.state.betAmount} displayDealerTotal = {this.state.displayDealerTotal} dealerTotal = {this.state.dealerTotal} playerTotal = {this.state.playerTotal} chips = {this.state.chips} winOrLose = {this.state.winOrLose} newGame = {this.newGame} drawOne = {this.drawOne} stand = {this.stand} flip = {this.handleFlip}/>
                 <Player flip = {this.state.flip} src = {this.state.src} type = "player" cards = {this.state.playerCards}/>
             </div>
 

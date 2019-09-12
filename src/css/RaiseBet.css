@@ -1,0 +1,46 @@
+#middle 
+{
+    margin-left:100px;
+    margin-right: 100px;
+}
+button 
+{
+    height:100px;
+    width: 100px;
+}
+.fifty 
+{
+    position: relative;
+    width:100px;;
+    text-align: center;
+    margin: auto;
+    display: inline;
+    margin:15px;
+}
+.fiftypic 
+{
+    height:100px;
+    width:auto;
+    z-index: 1;
+}
+.fiftytext 
+{
+    color: white;
+    font-weight: 800;
+
+    position: absolute;
+    bottom: 30px;
+    left:38px;
+    z-index:2;
+}
+
+.fiftytextminus 
+{
+    color: white;
+    font-weight: 800;
+
+    position: absolute;
+    bottom: 30px;
+    left:32px;
+    z-index:2;
+}

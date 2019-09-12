@@ -1,5 +1,5 @@
 import React from "react"
-import Cardback from "../images/cardback.png"
+import Cardback from "../images/Cardback.png"
 import "../css/Imgcss.css"
 export default class Cards extends React.Component
 {

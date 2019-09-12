@@ -1,3 +1,7 @@
+.middleSeparate 
+{
+    display: inline-block;
+}
 .middle 
 {
     background-image: url("https://ii3.worldmarket.com/fcgi-bin/iipsrv.fcgi?FIF=/images/worldmarket/source/74812_XXX_v6.tif&wid=480&cvt=jpeg");
@@ -5,6 +9,7 @@
     font-size:16px;
     padding:3px;
     border: 2px dotted black;
+    position: relative;
 }
 .middle button 
 {
