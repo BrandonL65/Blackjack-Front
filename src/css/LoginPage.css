@@ -1,0 +1,56 @@
+body 
+{
+    margin: 0px;
+    padding: 0px;
+}
+#bigDiv 
+{
+    background-color: #338a54;
+    height:100vh;
+    text-align: center;
+    padding-top: 100px;
+}
+#signupID
+{
+    margin-top: 20px;
+}
+#logo 
+{
+    height:360px;
+    width:auto;
+    margin-bottom:36px;
+}
+.welcome 
+{
+    font-size:50px;
+    color:#6e2142;
+    margin-bottom: 20px;
+}
+.inputfields 
+{
+    border-radius: 5%;
+    height:30px;
+    margin:10px;
+    background-color:#c7f0db;
+}
+.labelInput 
+{
+    color:#e16363;
+    font-weight:700;
+    font-size:17px;
+}
+.greeting 
+{
+    color: #943855;
+    margin-bottom:20px;
+    margin-top: 20px;
+    font-size:28px;
+}
+.SignupLoginButton
+{
+    padding:5px;
+    margin-top:10px;
+    border-radius: 5%;
+    background-color: #e5e5e5;
+    font-size:13px;
+}

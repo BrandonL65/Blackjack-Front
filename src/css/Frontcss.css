@@ -7,3 +7,16 @@
     height:100vh;
     padding-top:100px;
 }
+
+#imageOnBoard 
+{
+    height:100px;
+    width:auto;
+    margin-top:-50px;
+}
+
+#boardWelcome 
+{
+    font-size:40px;
+    color: #fdc8b7;
+}

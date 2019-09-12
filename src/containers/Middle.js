@@ -8,10 +8,9 @@ export default class Middle extends React.Component
     {
         return (
             <div className = "middle">
-                <h2>{this.props.winOrLose}</h2>
                 <div className = "middleSeparate">
                     <h3>Chips: {this.props.chips}</h3>
-                    <RaiseBet />
+                    <RaiseBet handleBetAmount = {this.props.handleBetAmount}/>
                     <h3>Current Bet: {this.props.betAmount} </h3>
                 </div>
 

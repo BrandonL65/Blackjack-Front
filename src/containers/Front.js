@@ -2,6 +2,7 @@ import React from "react"
 import Player from "./Player.js"
 import Middle from "./Middle.js"
 import "../css/Frontcss.css"
+import Logo from "../images/blackjackLogo.png"
 const tenValues = ["QUEEN", "KING", "JACK", "10"];
 
 export default class Front extends React.Component 
@@ -23,8 +24,7 @@ export default class Front extends React.Component
         gameOver: false,
         playerNumberOfAces: 0,
         dealerNumberOfAces: 0,
-        betAmount: 50,
-        doneDealing: false 
+        betAmount: 100
     }
     componentDidMount() 
     {
@@ -106,6 +106,7 @@ export default class Front extends React.Component
     {                  
         this.setState({
             ...this.state,
+            name: this.state.name,
             playerCards: [],
             playerTotal: 0,
             dealerCards: [],
@@ -116,8 +117,7 @@ export default class Front extends React.Component
             winOrLose: "",
             gameOver: false,
             playerNumberOfAces: 0,
-            dealerNumberOfAces: 0,
-            doneDealing: false 
+            dealerNumberOfAces: 0
         }, () => {
             console.log(this.state)
             this.newDeck()                              //Draws 2 cards for player and 2 cards for dealer 
@@ -143,11 +143,9 @@ export default class Front extends React.Component
                     this.setState({                                                         
                         ...this.state,
                         playerTotal: 12,
-                        playerNumberOfAces: this.state.playerNumberOfAces + 1,
-                        doneDealing: true 
+                        playerNumberOfAces: this.state.playerNumberOfAces + 1
                     }, () => {
-                        this.delay(300)
-                        .then(() => this.doneDealing());
+                        this.delay(300);
                     })
                 }
                 else if (this.handleInitialPlayerAce() === 2)                         //Returns false if only 1 of the player's initial cards is an ace 
@@ -185,12 +183,6 @@ export default class Front extends React.Component
             })
         })
     }
-    handleDoneDealing = () => {
-        this.setState({
-            ...this.state,
-            doneDealing: true 
-        })
-    }
     handleInitialDealerAce = () => {
         if (this.state.dealerCards[0].value === "ACE" && tenValues.includes(this.state.dealerCards[1].value)) {                                      //if initial 2 cards are 21, dealer hits blackjack
             return 1;
@@ -212,7 +204,7 @@ export default class Front extends React.Component
     }
     drawOne = () =>                           //Draw only 1 card
     {
-        if (this.state.doneDealing === true)
+        if (this.state.gameOver !== true)           //only works if game isnt won/lost yet
         {
             this.drawCard("p")                 //Player draws a card 
             .then(() => {
@@ -238,7 +230,6 @@ export default class Front extends React.Component
                         this.winOrLoseAlert("lose");
                     }
                 }
-
             })
         }
 
@@ -259,57 +250,20 @@ export default class Front extends React.Component
 
     stand = () =>                           
     {
-        // if (this.state.gameOver !== true)
-        // {
-        //     this.handleFlip()                                   //flip dealer 2nd card 
-        //     this.delay(600)
-        //     .then(() => {
-                
-        //         if (this.state.dealerTotal > 21)                                    //if dealer busts, you win
-        //         {
-        //             this.winOrLoseAlert("win", 30)
-        //         }
-        //         if (this.state.dealerTotal <= 21 && this.state.dealerTotal >= 17)           //Compares totals 
-        //         {
-
-        //             if (this.state.dealerTotal > this.state.playerTotal) {
-        //                 this.delay(300)
-        //                 .then(() => this.winOrLoseAlert("lose", 30))
-        //             }
-        //             else if (this.state.dealerTotal < this.state.playerTotal) {
-        //                 this.delay(300)
-        //                 .then(() => this.winOrLoseAlert("win", 30))
-        //             }
-        //             else if (this.state.dealerTotal === this.state.playerTotal) {
-        //                 this.delay(300)
-        //                 .then(() => this.winOrLoseAlert("push", 0))
-        //             }
-        //             else {
-        //                 this.delay(1000)
-        //                 .then(() => this.winOrLoseAlert("win", 30))
-        //             }
-        //         }
-        //         if (this.state.dealerTotal < 17)                                    //keep drawing if less than 17
-        //         {
-        //                 this.drawCard("d")
-        //                 .then(() => this.stand());
-        //         }
-        //     }) 
-        // }
-        this.delay(500)
-        .then(() => {
-            if (this.state.gameOver !== true) 
+        this.delay(500)                                                                 //wait 500 for async
+        .then(() => {                               
+            if (this.state.gameOver !== true)                                     //to stop users from continuously clicking stand 
             {
                 this.handleFlip();
                 this.delay(1000)
-                .then(() => {
+                .then(() => {                                           
                     this.setState({
                         ...this.state,
-                        displayDealerTotal: true 
+                        displayDealerTotal: true                                     //displays dealer total 
                     })
                     this.delay(500)
                     .then(() => {
-                        if (this.state.dealerTotal === 17 && this.state.dealerNumberOfAces > 0) 
+                        if (this.state.dealerTotal === 17 && this.state.dealerNumberOfAces > 0)     //if dealer reaches 17 w/ Aces
                         {
                             this.setState({
                                 ...this.state,
@@ -323,25 +277,7 @@ export default class Front extends React.Component
                                 })
                             })
                         }
-                        else if (this.state.dealerTotal === 17 && this.state.dealerNumberOfAces === 0) 
-                        {
-                            if (this.state.dealerTotal > this.state.playerTotal) 
-                            {
-                                this.delay(300)
-                                .then(() => this.winOrLoseAlert("lose"))
-                            }
-                            else if (this.state.playerTotal > this.state.dealerTotal) 
-                            {
-                                this.delay(300)
-                                .then(() => this.winOrLoseAlert("win"))
-                            }
-                            else if (this.state.playerTotal === this.state.dealerTotal) 
-                            {
-                                this.delay(300)
-                                .then(() => this.winOrLoseAlert("push"))
-                            }
-                        }
-                        else if (this.state.dealerTotal > 17 && this.state.dealerTotal <= 21)
+                        else if (this.state.dealerTotal >= 17 && this.state.dealerTotal <= 21 && this.state.dealerNumberOfAces === 0)               //if 
                         {
                             if (this.state.dealerTotal > this.state.playerTotal) {
                                 this.delay(300)
@@ -398,7 +334,6 @@ export default class Front extends React.Component
                             })
                         }
                     })
-
                 })
             }
         })                         
@@ -412,7 +347,9 @@ export default class Front extends React.Component
                     winOrLose: "Lose :(",
                     chips: this.state.chips - this.state.betAmount,
                     gameOver: true 
-                }, () => this.updateChipDatabase())
+                }, () => {
+                    this.delay(500)
+                    .then(() => this.updateChipDatabase())})
                 break
             case "win": 
                 this.setState({
@@ -420,7 +357,9 @@ export default class Front extends React.Component
                     winOrLose: "Win!!!",
                     chips: this.state.chips + this.state.betAmount,
                     gameOver: true 
-                }, () => this.updateChipDatabase())
+                }, () => {
+                    this.delay(500)
+                    .then(() => this.updateChipDatabase())})
                 break
             case "push":
                 this.setState({
@@ -428,13 +367,15 @@ export default class Front extends React.Component
                     winOrLose: "Push",
                     chips: this.state.chips,
                     gameOver: true 
-                }, () => this.updateChipDatabase())
+                }, () => {
+                    this.delay(500)
+                    .then(() => this.updateChipDatabase())})
                 break 
             default:
                 break 
         }
     }
-    updateChipDatabase = () => {
+    updateChipDatabase = () => {                                                //Patches database to change chip amount
         fetch(`http://localhost:3000/chips/${this.state.chipsID}`,{
             method: 'PATCH',
             headers: {
@@ -443,10 +384,6 @@ export default class Front extends React.Component
             body: JSON.stringify({
                 amount: this.state.chips
             })
-        })
-        .then( resp => resp.json())
-        .then( data => {
-            console.log(`New Update: ${data.amount}`)
         })
     }
     handleValueAndDeck = (drawn, who) =>             //Called above. Assigns value to card and total cards  
@@ -479,6 +416,26 @@ export default class Front extends React.Component
             flip: true 
         })
     }
+    handleBetAmount = (condition) =>                    //Changes the bet amount when clicking the img 
+    {
+        switch (condition)
+        {
+            case "increase":
+                this.setState({
+                    ...this.state,
+                    betAmount: this.state.betAmount + 50
+                })
+                break;
+            case "decrease":
+                this.setState({
+                    ...this.state,
+                    betAmount: this.state.betAmount - 50
+                })
+                break;
+            default:
+                break;
+        }
+    }
     delay = (t) =>                      //Delay for drawing card 
     {
         return new Promise(resolve => setTimeout(resolve,t));
@@ -487,8 +444,10 @@ export default class Front extends React.Component
     {
         return (
             <div className = "board">
+                <img id = "imageOnBoard" src = {Logo}></img>
+                {this.state.winOrLose.length > 0 ? <h1 id = "boardWelcome">{this.state.winOrLose}</h1> : <h1 id = "boardWelcome">Welcome, {this.state.name}</h1>}
                 <Player flip = {this.state.flip} src = {this.state.src} type = "dealer" cards = {this.state.dealerCards}/>
-                <Middle betAmount = {this.state.betAmount} displayDealerTotal = {this.state.displayDealerTotal} dealerTotal = {this.state.dealerTotal} playerTotal = {this.state.playerTotal} chips = {this.state.chips} winOrLose = {this.state.winOrLose} newGame = {this.newGame} drawOne = {this.drawOne} stand = {this.stand} flip = {this.handleFlip}/>
+                <Middle handleBetAmount = {this.handleBetAmount} betAmount = {this.state.betAmount} displayDealerTotal = {this.state.displayDealerTotal} dealerTotal = {this.state.dealerTotal} playerTotal = {this.state.playerTotal} chips = {this.state.chips} winOrLose = {this.state.winOrLose} newGame = {this.newGame} drawOne = {this.drawOne} stand = {this.stand} flip = {this.handleFlip}/>
                 <Player flip = {this.state.flip} src = {this.state.src} type = "player" cards = {this.state.playerCards}/>
             </div>
 

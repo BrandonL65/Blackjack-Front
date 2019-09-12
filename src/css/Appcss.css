@@ -1,6 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Old+Standard+TT&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Old Standard TT', serif;
+  }
+
 .app 
 {
     position:relative;
     height:100vh;
     background-color: blue;
+    padding: 0px;
+    margin: 0px;
 }

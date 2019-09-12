@@ -3,15 +3,11 @@
     margin-left:100px;
     margin-right: 100px;
 }
-button 
-{
-    height:100px;
-    width: 100px;
-}
+
 .fifty 
 {
     position: relative;
-    width:100px;;
+    width:100px;
     text-align: center;
     margin: auto;
     display: inline;

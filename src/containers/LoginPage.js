@@ -1,12 +1,11 @@
-
 import React from "react"
-
-
+import "../css/LoginPage.css"
+import Logo from "../images/blackjackLogo.png"
 export default class LoginPage extends React.Component 
 {
     state = {
-        name: "",
-        password: ""
+        name: "Name",
+        password: "Password"
     }
 
     handleChange = (e) => {
@@ -43,28 +42,36 @@ export default class LoginPage extends React.Component
         if (this.props.type === 'login')
         {
             return (
-                <div>
-                    <h1>Log In</h1>
+                <div id = "bigDiv">
+                    <img id = "logo" src = {Logo}></img>
+                    <h1 className = "welcome" >Welcome to Blackjack!</h1>
+                    <h2 className = "greeting">Log In</h2>
                     <form onSubmit = {this.handleSubmit}>
-                        <input type = "text" name = "name" value = {this.state.user} onChange = {this.handleChange}></input>
-                        <input type = "password" name = "password" value = {this.state.password} onChange = {this.handleChange}></input>
-                        <input type = "submit"></input>
+                        <label className = "labelInput" for = "name" >Name:</label>
+                        <input className = "inputfields" type = "text" name = "name" value = {this.state.user} onChange = {this.handleChange} placeholder = "Name"></input>
+                        <label className = "labelInput" for = "password" >Password:</label>
+                        <input className = "inputfields" type = "password" name = "password" value = {this.state.password} onChange = {this.handleChange} placeholder = "Password"></input>
+                        <input id = "submitInput"  type = "submit"></input>
                     </form>
-                    <button onClick = {this.props.changeType}>Click here to sign up</button>
+                    <button className = "SignupLoginButton" onClick = {this.props.changeType}>Click here to sign up</button>
                 </div>
             )
         }
         else if (this.props.type === 'signup')
         {
             return (
-                <div>
-                    <h1>Sign Up</h1>
+                <div id = "bigDiv">
+                    <img id = "logo" src = {Logo}></img>
+                    <h1 className = "welcome" >Welcome to Blackjack!</h1>
+                    <h2 className = "greeting" >Sign up</h2>
                     <form onSubmit = {this.handleSubmit}>
-                        <input type = "text" name = "name" value = {this.state.name} onChange = {this.handleChange}></input>
-                        <input type = "password" name = "password" value = {this.state.password} onChange = {this.handleChange}></input>
-                        <input type = "submit"></input>
+                        <label className = "labelInput" for = "name" >Name:</label>
+                        <input className = "inputfields" type = "text" name = "name" value = {this.state.name} onChange = {this.handleChange}></input>
+                        <label className = "labelInput" for = "name" >Password:</label>
+                        <input className = "inputfields" type = "password" name = "password" value = {this.state.password} onChange = {this.handleChange}></input>
+                        <input id = "submitInput" type = "submit"></input>
                     </form>
-                    <button onClick = {this.props.changeType}>Click here to Log in</button>
+                    <button className = "SignupLoginButton" onClick = {this.props.changeType}>Click here to Log in</button>
                 </div>
             )
         }
