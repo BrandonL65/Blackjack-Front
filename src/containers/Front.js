@@ -28,7 +28,7 @@ export default class Front extends React.Component
     }
     componentDidMount() 
     {
-        fetch(`http://localhost:3000/profile`,
+        fetch(`https://blackjack-back.herokuapp.com/profile`,
         {
             headers: 
             {
@@ -376,7 +376,7 @@ export default class Front extends React.Component
         }
     }
     updateChipDatabase = () => {                                                //Patches database to change chip amount
-        fetch(`http://localhost:3000/chips/${this.state.chipsID}`,{
+        fetch(`https://blackjack-back.herokuapp.com/chips/${this.state.chipsID}`,{
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

@@ -16,7 +16,7 @@ export default class LoginPage extends React.Component
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        fetch(`http://localhost:3000/${this.props.type}`,                                
+        fetch(`https://blackjack-back.herokuapp.com/${this.props.type}`,                                
         {
             method: 'POST',
             headers: 
