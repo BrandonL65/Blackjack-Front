@@ -436,6 +436,11 @@ export default class Front extends React.Component
                 break;
         }
     }
+    handleSignout = () => 
+    {
+        localStorage.clear();
+        window.location.reload();
+    }
     delay = (t) =>                      //Delay for drawing card 
     {
         return new Promise(resolve => setTimeout(resolve,t));
@@ -446,6 +451,7 @@ export default class Front extends React.Component
             <div className = "board">
                 <img id = "imageOnBoard" src = {Logo}></img>
                 {this.state.winOrLose.length > 0 ? <h1 id = "boardWelcome">{this.state.winOrLose}</h1> : <h1 id = "boardWelcome">Welcome, {this.state.name}</h1>}
+                <button onClick = {this.handleSignout}>Sign Out</button>
                 <Player flip = {this.state.flip} src = {this.state.src} type = "dealer" cards = {this.state.dealerCards}/>
                 <Middle handleBetAmount = {this.handleBetAmount} betAmount = {this.state.betAmount} displayDealerTotal = {this.state.displayDealerTotal} dealerTotal = {this.state.dealerTotal} playerTotal = {this.state.playerTotal} chips = {this.state.chips} winOrLose = {this.state.winOrLose} newGame = {this.newGame} drawOne = {this.drawOne} stand = {this.stand} flip = {this.handleFlip}/>
                 <Player flip = {this.state.flip} src = {this.state.src} type = "player" cards = {this.state.playerCards}/>
