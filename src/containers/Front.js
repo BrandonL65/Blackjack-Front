@@ -290,6 +290,11 @@ export default class Front extends React.Component
                                 })
                             })
                         }
+                        else if (this.state.dealerTotal === 17 && this.state.dealerNumberOfAces === 0) 
+                        {
+                            this.delay(300)
+                            .then(() => this.winOrLoseAlert("lose"));
+                        }
                         else if (this.state.dealerTotal > 17 && this.state.dealerTotal <= 21)               //if 
                         {
                             if (this.state.dealerTotal > this.state.playerTotal) {
