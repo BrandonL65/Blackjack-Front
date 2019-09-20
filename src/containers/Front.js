@@ -148,7 +148,12 @@ export default class Front extends React.Component
                         this.delay(300);
                     })
                 }
-                else if (this.handleInitialPlayerAce() === 2)                         //Returns false if only 1 of the player's initial cards is an ace 
+                else if (this.handleInitialPlayerAce() === 2) 
+                {
+                    this.delay(400)
+                    .then(() => this.winOrLoseAlert("blackjack"))
+                }
+                else if (this.handleInitialPlayerAce() === 3)                         //Returns false if only 1 of the player's initial cards is an ace 
                 {   
                     this.setState({
                         ...this.state,
@@ -198,8 +203,16 @@ export default class Front extends React.Component
         if (this.state.playerCards[0].value === "ACE" && this.state.playerCards[1].value === "ACE") {
             return 1;
         }
-        else if (this.state.playerCards[0].value === "ACE" || this.state.playerCards[1].value === "ACE") {
+        else if (this.state.playerCards[0].value === "ACE" && tenValues.includes(this.state.playerCards[1].value))
+        {
             return 2;
+        }
+        else if (this.state.playerCards[1].value === "ACE" && tenValues.includes(this.state.playerCards[0].value))
+        {
+            return 2;
+        }
+        else if (this.state.playerCards[0].value === "ACE" || this.state.playerCards[1].value === "ACE") {
+            return 3;
         }
     }
     drawOne = () =>                           //Draw only 1 card
@@ -277,7 +290,7 @@ export default class Front extends React.Component
                                 })
                             })
                         }
-                        else if (this.state.dealerTotal >= 17 && this.state.dealerTotal <= 21 && this.state.dealerNumberOfAces === 0)               //if 
+                        else if (this.state.dealerTotal > 17 && this.state.dealerTotal <= 21)               //if 
                         {
                             if (this.state.dealerTotal > this.state.playerTotal) {
                                 this.delay(300)
@@ -371,6 +384,15 @@ export default class Front extends React.Component
                     this.delay(500)
                     .then(() => this.updateChipDatabase())})
                 break 
+            case "blackjack":
+                this.setState({
+                    ...this.state,
+                    winOrLose: "BLACKJACK!!!",
+                    chips: this.state.chips + this.state.betAmount + this.state.betAmount/2,
+                    gameOver: true 
+                }, () => {
+                    this.delay(500)
+                    .then(() => this.updateChipDatabase())})
             default:
                 break 
         }
