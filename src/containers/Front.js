@@ -5,7 +5,7 @@ import "../css/Frontcss.css"
 import Logo from "../images/blackjackLogo.png"
 const tenValues = ["QUEEN", "KING", "JACK", "10"];
 
-export default class Front extends React.Component 
+export default class Front extends React.Component
 {
     state = {
         name: '',
@@ -17,7 +17,7 @@ export default class Front extends React.Component
         playerTotal: 0,
         dealerCards: [],
         dealerTotal: 0,
-        displayDealerTotal: false,                 
+        displayDealerTotal: false,
         src: "",                        //source of 2nd card image
         flip: false,                     //if true, flip the 2nd dealer card
         winOrLose: "",
@@ -26,17 +26,18 @@ export default class Front extends React.Component
         dealerNumberOfAces: 0,
         betAmount: 100
     }
-    componentDidMount() 
+
+    componentDidMount()
     {
         fetch(`https://blackjack-back.herokuapp.com/profile`,
         {
-            headers: 
+            headers:
             {
                 Authorization: localStorage.token
             }
         })
         .then( resp => resp.json())
-        .then( data => 
+        .then( data =>
         {
             this.setState
             ({
@@ -47,13 +48,13 @@ export default class Front extends React.Component
             })
         })
     }
-    newDeck = () => 
-    {                                                                       //Fetches new deck and assigns to state 
+    newDeck = () =>
+    {                                                                       //Fetches new deck and assigns to state
         if (this.state.cardsRemaining < 110)                                    //if less than 100 cards left, shuffle
         {
-            return fetch(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=8`)               //6 decks 
-            .then( resp => resp.json()) 
-            .then( data => {     
+            return fetch(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=8`)               //6 decks
+            .then( resp => resp.json())
+            .then( data => {
                 this.setState({
                     deckID: data["deck_id"],
                     cardsRemaining: data.remaining
@@ -64,9 +65,9 @@ export default class Front extends React.Component
             return this.delay(100);
         }
     }
-    drawCard = (who) => 
-    {                      
-        return fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckID}/draw/?count=1`)          
+    drawCard = (who) =>
+    {
+        return fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckID}/draw/?count=1`)
         .then( resp => resp.json())
         .then( data => {
             let assign = ""
@@ -80,10 +81,10 @@ export default class Front extends React.Component
                         playerCards: assign[1],
                         playerTotal: assign[0]
                     })
-                    break;                                              
-                case "d":                                                            //dealer draws card 
+                    break;
+                case "d":                                                            //dealer draws card
                     assign = this.handleValueAndDeck(data, "dealer")
-                    this.setState({                     //If dealer draws, then assign card to dealer 
+                    this.setState({                     //If dealer draws, then assign card to dealer
                         ...this.state,
                         cardsRemaining: data.remaining,
                         dealerCards: assign[1],
@@ -102,8 +103,8 @@ export default class Front extends React.Component
             }
         })
     }
-    newGame = () =>                          //Clears state, then calls a newDeck, and draws 2 Cards 
-    {                  
+    newGame = () =>                          //Clears state, then calls a newDeck, and draws 2 Cards
+    {
         this.setState({
             ...this.state,
             name: this.state.name,
@@ -120,7 +121,7 @@ export default class Front extends React.Component
             dealerNumberOfAces: 0
         }, () => {
             console.log(this.state)
-            this.newDeck()                              //Draws 2 cards for player and 2 cards for dealer 
+            this.newDeck()                              //Draws 2 cards for player and 2 cards for dealer
             .then(() => {
                 return this.drawCard("p")
                 .then(() => this.delay(600))
@@ -138,9 +139,9 @@ export default class Front extends React.Component
                 .then(() => this.delay(600))
             })
             .then(() => {
-                if (this.handleInitialPlayerAce() === 1)                               //Returns true if both of initial player cards are aces 
+                if (this.handleInitialPlayerAce() === 1)                               //Returns true if both of initial player cards are aces
                 {
-                    this.setState({                                                         
+                    this.setState({
                         ...this.state,
                         playerTotal: 12,
                         playerNumberOfAces: this.state.playerNumberOfAces + 1
@@ -148,21 +149,21 @@ export default class Front extends React.Component
                         this.delay(300);
                     })
                 }
-                else if (this.handleInitialPlayerAce() === 2) 
+                else if (this.handleInitialPlayerAce() === 2)
                 {
                     this.delay(400)
                     .then(() => this.winOrLoseAlert("blackjack"))
                 }
-                else if (this.handleInitialPlayerAce() === 3)                         //Returns false if only 1 of the player's initial cards is an ace 
-                {   
+                else if (this.handleInitialPlayerAce() === 3)                         //Returns false if only 1 of the player's initial cards is an ace
+                {
                     this.setState({
                         ...this.state,
                         playerNumberOfAces: this.state.playerNumberOfAces + 1
                     }, () => {
                         this.delay(300);
                     })
-                }      
-                if (this.handleInitialDealerAce() === 1)                                    //if initial 2 cards are 21, dealer hits blackjack 
+                }
+                if (this.handleInitialDealerAce() === 1)                                    //if initial 2 cards are 21, dealer hits blackjack
                 {
                     this.delay(1400)
                     .then( () => {
@@ -170,7 +171,7 @@ export default class Front extends React.Component
                         this.winOrLoseAlert("lose");
                     })
                 }
-                else if (this.handleInitialDealerAce() === 2) 
+                else if (this.handleInitialDealerAce() === 2)
                 {
                     this.setState({
                         ...this.state,
@@ -178,7 +179,7 @@ export default class Front extends React.Component
                         dealerNumberOfAces: this.state.dealerNumberOfAces + 1
                     })
                 }
-                else if (this.handleInitialDealerAce() === 3) 
+                else if (this.handleInitialDealerAce() === 3)
                 {
                     this.setState({
                         ...this.state,
@@ -188,6 +189,8 @@ export default class Front extends React.Component
             })
         })
     }
+
+
     handleInitialDealerAce = () => {
         if (this.state.dealerCards[0].value === "ACE" && tenValues.includes(this.state.dealerCards[1].value)) {                                      //if initial 2 cards are 21, dealer hits blackjack
             return 1;
@@ -199,7 +202,7 @@ export default class Front extends React.Component
             return 3;
         }
     }
-    handleInitialPlayerAce = () => {                                                                             //Checks if first two cards contain an ace, used in newGame function 
+    handleInitialPlayerAce = () => {                                                                             //Checks if first two cards contain an ace, used in newGame function
         if (this.state.playerCards[0].value === "ACE" && this.state.playerCards[1].value === "ACE") {
             return 1;
         }
@@ -219,7 +222,7 @@ export default class Front extends React.Component
     {
         if (this.state.gameOver !== true)           //only works if game isnt won/lost yet
         {
-            this.drawCard("p")                 //Player draws a card 
+            this.drawCard("p")                 //Player draws a card
             .then(() => {
                 this.delay(300)
                 if (this.state.gameOver !== true)
@@ -228,17 +231,17 @@ export default class Front extends React.Component
                     if (this.state.playerTotal > 21 && this.state.playerNumberOfAces > 0)                   //If over 21 and player has 1 ace that can become a 1, make it a 1
                     {
                         this.setState({                                                                     //making it a 1
-                            ...this.state,          
+                            ...this.state,
                             playerTotal: this.state.playerTotal-10,
                             playerNumberOfAces: this.state.playerNumberOfAces - 1
                         }, () => {
-                            if (this.state.playerTotal > 21)                                                    //if after making it a 1, and playerTotal is still over 21, game over 
+                            if (this.state.playerTotal > 21)                                                    //if after making it a 1, and playerTotal is still over 21, game over
                             {
                                 this.winOrLoseAlert("lose");
                             }
                         })
                     }
-                    else if (this.state.playerTotal > 21 && this.state.playerNumberOfAces === 0)              //if player has no aces available, then lose game if over 21 
+                    else if (this.state.playerTotal > 21 && this.state.playerNumberOfAces === 0)              //if player has no aces available, then lose game if over 21
                     {
                         this.winOrLoseAlert("lose");
                     }
@@ -248,12 +251,12 @@ export default class Front extends React.Component
 
 
     }
-    handleAceValue = () => {                                                                    //Checks if last card drawn is an ace 
+    handleAceValue = () => {                                                                    //Checks if last card drawn is an ace
         if (this.state.playerCards.length > 2) {                                            //For every card drawn, see if last card is ace
             if (this.state.playerCards[this.state.playerCards.length-1].value === "ACE") {
                 this.setState({
                     ...this.state,
-                    playerNumberOfAces: this.state.playerNumberOfAces + 1                       //add 1 to # of player aces 
+                    playerNumberOfAces: this.state.playerNumberOfAces + 1                       //add 1 to # of player aces
                 }, () => {
                     this.delay(300);
                 })
@@ -261,18 +264,18 @@ export default class Front extends React.Component
         }
     }
 
-    stand = () =>                           
+    stand = () =>
     {
         this.delay(500)                                                                 //wait 500 for async
-        .then(() => {                               
-            if (this.state.gameOver !== true)                                     //to stop users from continuously clicking stand 
+        .then(() => {
+            if (this.state.gameOver !== true)                                     //to stop users from continuously clicking stand
             {
                 this.handleFlip();
                 this.delay(1000)
-                .then(() => {                                           
+                .then(() => {
                     this.setState({
                         ...this.state,
-                        displayDealerTotal: true                                     //displays dealer total 
+                        displayDealerTotal: true                                     //displays dealer total
                     })
                     this.delay(500)
                     .then(() => {
@@ -290,12 +293,12 @@ export default class Front extends React.Component
                                 })
                             })
                         }
-                        else if (this.state.dealerTotal === 17 && this.state.dealerNumberOfAces === 0) 
+                        else if (this.state.dealerTotal === 17 && this.state.dealerNumberOfAces === 0)
                         {
                             this.delay(300)
                             .then(() => this.winOrLoseAlert("lose"));
                         }
-                        else if (this.state.dealerTotal > 17 && this.state.dealerTotal <= 21)               //if 
+                        else if (this.state.dealerTotal > 17 && this.state.dealerTotal <= 21)               //if
                         {
                             if (this.state.dealerTotal > this.state.playerTotal) {
                                 this.delay(300)
@@ -312,7 +315,7 @@ export default class Front extends React.Component
                             else {
                                 this.delay(1000)
                                 .then(() => this.winOrLoseAlert("win"))
-                            }                    
+                            }
                         }
                         else if (this.state.dealerTotal > 21 && this.state.dealerNumberOfAces > 0)
                         {
@@ -329,7 +332,7 @@ export default class Front extends React.Component
                         {
                             this.winOrLoseAlert("win");
                         }
-                        else if (this.state.dealerTotal < 17) 
+                        else if (this.state.dealerTotal < 17)
                         {
                             this.drawCard("d")
                             .then(() => {
@@ -344,7 +347,7 @@ export default class Front extends React.Component
                                             this.stand();
                                         })
                                     }
-                                    else 
+                                    else
                                     {
                                         this.stand();
                                     }
@@ -354,27 +357,27 @@ export default class Front extends React.Component
                     })
                 })
             }
-        })                         
+        })
     }
-    winOrLoseAlert = (what) => {                     //Different cases for different win/loss scenarios 
-        switch (what)               
+    winOrLoseAlert = (what) => {                     //Different cases for different win/loss scenarios
+        switch (what)
         {
             case "lose":
                 this.setState({
                     ...this.state,
                     winOrLose: "Lose :(",
                     chips: this.state.chips - this.state.betAmount,
-                    gameOver: true 
+                    gameOver: true
                 }, () => {
                     this.delay(500)
                     .then(() => this.updateChipDatabase())})
                 break
-            case "win": 
+            case "win":
                 this.setState({
                     ...this.state,
                     winOrLose: "Win!!!",
                     chips: this.state.chips + this.state.betAmount,
-                    gameOver: true 
+                    gameOver: true
                 }, () => {
                     this.delay(500)
                     .then(() => this.updateChipDatabase())})
@@ -384,22 +387,22 @@ export default class Front extends React.Component
                     ...this.state,
                     winOrLose: "Push",
                     chips: this.state.chips,
-                    gameOver: true 
+                    gameOver: true
                 }, () => {
                     this.delay(500)
                     .then(() => this.updateChipDatabase())})
-                break 
+                break
             case "blackjack":
                 this.setState({
                     ...this.state,
                     winOrLose: "BLACKJACK!!!",
                     chips: this.state.chips + this.state.betAmount + this.state.betAmount/2,
-                    gameOver: true 
+                    gameOver: true
                 }, () => {
                     this.delay(500)
                     .then(() => this.updateChipDatabase())})
             default:
-                break 
+                break
         }
     }
     updateChipDatabase = () => {                                                //Patches database to change chip amount
@@ -413,8 +416,8 @@ export default class Front extends React.Component
             })
         })
     }
-    handleValueAndDeck = (drawn, who) =>             //Called above. Assigns value to card and total cards  
-    {                     
+    handleValueAndDeck = (drawn, who) =>             //Called above. Assigns value to card and total cards
+    {
         let value = this.state[`${who}Total`]
         let currentCards = this.state[`${who}Cards`];
         for (let i=0; i < drawn.cards.length; i++) {
@@ -424,26 +427,26 @@ export default class Front extends React.Component
         return [value,currentCards]
     }
 
-    assignValueToCard = (card) =>               //Fn to map card to actual int value 
-    {                         
+    assignValueToCard = (card) =>               //Fn to map card to actual int value
+    {
         if (card.value === "ACE") {
             return 11
         }
         else if (tenValues.includes(card.value)) {
-            return 10 
+            return 10
         }
         else {
             return parseInt(card.value)
         }
     }
-    handleFlip = () =>                                                      //flip dealer 2nd card 
+    handleFlip = () =>                                                      //flip dealer 2nd card
     {
         this.setState({
             ...this.state,
-            flip: true 
+            flip: true
         })
     }
-    handleBetAmount = (condition) =>                    //Changes the bet amount when clicking the img 
+    handleBetAmount = (condition) =>                    //Changes the bet amount when clicking the img
     {
         switch (condition)
         {
@@ -463,12 +466,12 @@ export default class Front extends React.Component
                 break;
         }
     }
-    handleSignout = () => 
+    handleSignout = () =>
     {
         localStorage.clear();
         window.location.reload();
     }
-    delay = (t) =>                      //Delay for drawing card 
+    delay = (t) =>                      //Delay for drawing card
     {
         return new Promise(resolve => setTimeout(resolve,t));
     }
