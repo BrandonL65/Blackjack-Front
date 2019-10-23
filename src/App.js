@@ -11,14 +11,6 @@ class App extends React.Component{
     type: 'login'
   }
 
-  redirect = (page) => 
-  {
-    this.setState({
-      ...this.state,
-      page: page 
-    })
-  }
-
   componentDidMount() 
   {
     if (localStorage.token) 
@@ -26,7 +18,13 @@ class App extends React.Component{
       this.redirect('front')
     }
   }
-  
+  redirect = (page) => 
+  {
+    this.setState({
+      ...this.state,
+      page: page 
+    })
+  }
   handleType = () => {
     if (this.state.type === 'login')
     {
@@ -42,7 +40,6 @@ class App extends React.Component{
         type: 'login'
       })
     }
-
   }
   render()
   {
