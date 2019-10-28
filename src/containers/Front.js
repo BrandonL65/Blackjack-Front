@@ -256,7 +256,7 @@ export default class Front extends React.Component
                     ...this.state,
                     playerNumberOfAces: this.state.playerNumberOfAces + 1                       //add 1 to # of player aces
                 }, () => {
-                    this.delay(300);
+                    this.delay(400);
                 })
             }
         }
