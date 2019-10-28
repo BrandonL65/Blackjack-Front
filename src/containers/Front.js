@@ -248,8 +248,6 @@ export default class Front extends React.Component
                 }
             })
         }
-
-
     }
     handleAceValue = () => {                                                                    //Checks if last card drawn is an ace
         if (this.state.playerCards.length > 2) {                                            //For every card drawn, see if last card is ace
